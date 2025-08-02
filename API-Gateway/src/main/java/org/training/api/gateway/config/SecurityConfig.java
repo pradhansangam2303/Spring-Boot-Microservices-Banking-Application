@@ -14,6 +14,8 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         http
                 .authorizeExchange()
+                //ALLOWING STATIC RESOURCES (CSS, JS, HTML)
+                .pathMatchers("/", "/index.html", "/css/**", "/js/**", "/images/**", "/assets/**").permitAll()
                 //ALLOWING REGISTER API FOR DIRECT ACCESS
                 .pathMatchers("/api/users/register").permitAll()
                 //ALL OTHER APIS ARE AUTHENTICATED
