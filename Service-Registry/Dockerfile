@@ -2,8 +2,8 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY target/userservice-0.0.1-SNAPSHOT.jar app.jar
+COPY target/serviceregistry-0.0.1-SNAPSHOT.jar app.jar
 
-EXPOSE 8081
+EXPOSE 8761
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
