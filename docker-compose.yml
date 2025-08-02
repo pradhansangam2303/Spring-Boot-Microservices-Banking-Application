@@ -1,0 +1,184 @@
+version: '3.8'
+
+services:
+  # MySQL Database for User Service
+  user-service-db:
+    image: mysql:8.0
+    container_name: user-service-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: user_service_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - user_db_data:/var/lib/mysql
+    networks:
+      - banking-network
+
+  # MySQL Database for Account Service
+  account-service-db:
+    image: mysql:8.0
+    container_name: account-service-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: account_service_db
+    ports:
+      - "3308:3306"
+    volumes:
+      - account_db_data:/var/lib/mysql
+    networks:
+      - banking-network
+
+  # MySQL Database for Transaction Service
+  transaction-service-db:
+    image: mysql:8.0
+    container_name: transaction-service-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: transaction_service_db
+    ports:
+      - "3309:3306"
+    volumes:
+      - transaction_db_data:/var/lib/mysql
+    networks:
+      - banking-network
+
+  # MySQL Database for Fund Transfer Service
+  fund-transfer-service-db:
+    image: mysql:8.0
+    container_name: fund-transfer-service-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fund_transfer_service_db
+    ports:
+      - "3310:3306"
+    volumes:
+      - fund_transfer_db_data:/var/lib/mysql
+    networks:
+      - banking-network
+
+  # MySQL Database for Sequence Generator
+  sequence-generator-db:
+    image: mysql:8.0
+    container_name: sequence-generator-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sequence_generator_db
+    ports:
+      - "3311:3306"
+    volumes:
+      - sequence_db_data:/var/lib/mysql
+    networks:
+      - banking-network
+
+  # Keycloak for Authentication
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.0.1
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://keycloak-db:3306/keycloak
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: root
+    ports:
+      - "8571:8080"
+    depends_on:
+      - keycloak-db
+    command: start-dev
+    networks:
+      - banking-network
+
+  # MySQL Database for Keycloak
+  keycloak-db:
+    image: mysql:8.0
+    container_name: keycloak-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+    volumes:
+      - keycloak_db_data:/var/lib/mysql
+    networks:
+      - banking-network
+
+  # Service Registry (Eureka Server)
+  service-registry:
+    build:
+      context: ./Service-Registry
+      dockerfile: Dockerfile
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    networks:
+      - banking-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./API-Gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - service-registry
+      - keycloak
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://service-registry:8761/eureka
+      KEYCLOAK_URL: http://keycloak:8080/
+    networks:
+      - banking-network
+
+  # User Service
+  user-service:
+    build:
+      context: ./User-Service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - service-registry
+      - user-service-db
+      - keycloak
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://user-service-db:3306/user_service_db
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://service-registry:8761/eureka
+      KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080/
+    networks:
+      - banking-network
+
+  # Sequence Generator Service
+  sequence-generator:
+    build:
+      context: ./Sequence-Generator
+      dockerfile: Dockerfile
+    container_name: sequence-generator
+    ports:
+      - "8083:8083"
+    depends_on:
+      - service-registry
+      - sequence-generator-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://sequence-generator-db:3306/sequence_generator_db
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://service-registry:8761/eureka
+    networks:
+      - banking-network
+
+volumes:
+  user_db_data:
+  account_db_data:
+  transaction_db_data:
+  fund_transfer_db_data:
+  sequence_db_data:
+  keycloak_db_data:
+
+networks:
+  banking-network:
+    driver: bridge

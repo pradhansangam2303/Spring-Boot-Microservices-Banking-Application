@@ -5,25 +5,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import java.time.LocalDate;
+
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserUpdate {
 
-    private String firstName;
-
-    private String lastName;
+    @Email(message = "Email should be valid")
+    private String emailId;
 
     private String contactNo;
-
+    private String firstName;
+    private String lastName;
+    private LocalDate dateOfBirth;
     private String address;
-
-    private String gender;
-
-    private String occupation;
-
-    private String martialStatus;
-
-    private String nationality;
+    private String city;
+    private String state;
+    private String country;
+    private String postalCode;
 }

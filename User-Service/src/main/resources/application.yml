@@ -1,32 +1,49 @@
 server:
-  port: 8082
+  port: 8081
 
 spring:
   application:
     name: user-service
-    bad_request: 400
-    conflict: 409
-    success: 200
-    not_found: 404
 
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB_NAME:user_service}
-    username: ${MYSQL_USER:root}
-    password: ${MYSQL_PASSWORD:root}
+    url: jdbc:mysql://localhost:3306/user_service_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
 
-app:
-  config:
-    keycloak:
-      server-url: http://localhost:8571
-      realm: banking-service
-      client-id: banking-service-api-client
-      client-secret: 932OFITe8vtH4z0G9gem4Afd69JhbwrI
+# Keycloak Configuration
+keycloak:
+  auth-server-url: http://localhost:8571/
+  realm: banking-service
+  resource: banking-service-client
+  credentials:
+    secret: your-client-secret
+  admin:
+    username: admin
+    password: admin
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    org.training.user.service: DEBUG
+    org.hibernate.SQL: DEBUG
 

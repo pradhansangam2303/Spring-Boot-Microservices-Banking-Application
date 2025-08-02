@@ -5,16 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 public class UserProfile {
 
     @Id
@@ -25,13 +23,15 @@ public class UserProfile {
 
     private String lastName;
 
-    private String gender;
+    private LocalDate dateOfBirth;
 
     private String address;
 
-    private String occupation;
+    private String city;
 
-    private String martialStatus;
+    private String state;
 
-    private String nationality;
+    private String country;
+
+    private String postalCode;
 }

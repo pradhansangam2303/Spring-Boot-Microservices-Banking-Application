@@ -12,6 +12,7 @@ import org.training.user.service.model.dto.UserUpdateStatus;
 import org.training.user.service.model.dto.response.Response;
 import org.training.user.service.service.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -29,7 +30,7 @@ public class UserController {
      * @return the response entity containing the response
      */
     @PostMapping("/register")
-    public ResponseEntity<Response> createUser(@RequestBody CreateUser userDto) {
+    public ResponseEntity<Response> createUser(@Valid @RequestBody CreateUser userDto) {
         log.info("creating user with: {}", userDto.toString());
         return ResponseEntity.ok(userService.createUser(userDto));
     }
@@ -64,7 +65,7 @@ public class UserController {
      * @return The response entity containing the updated user and HTTP status.
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Response> updateUserStatus(@PathVariable Long id, @RequestBody UserUpdateStatus userUpdate) {
+    public ResponseEntity<Response> updateUserStatus(@PathVariable Long id, @Valid @RequestBody UserUpdateStatus userUpdate) {
         log.info("updating the user with: {}", userUpdate.toString());
         return new ResponseEntity<>(userService.updateUserStatus(id, userUpdate), HttpStatus.OK);
     }
@@ -77,7 +78,7 @@ public class UserController {
      * @return The response with the updated user information.
      */
     @PutMapping("{id}")
-    public ResponseEntity<Response> updateUser(@PathVariable Long id, @RequestBody UserUpdate userUpdate) {
+    public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdate userUpdate) {
         return new ResponseEntity<>(userService.updateUser(id, userUpdate), HttpStatus.OK);
     }
 

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.training.user.service.model.Status;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,16 +15,17 @@ import org.training.user.service.model.Status;
 public class UserDto {
 
     private Long userId;
-
     private String emailId;
-
-    private String password;
-
+    private String contactNo;
     private String identificationNumber;
-
-    private String authId;
-
+    private LocalDate creationOn;
     private Status status;
-
-    private UserProfileDto userProfileDto;
+    private String firstName;
+    private String lastName;
+    private LocalDate dateOfBirth;
+    private String address;
+    private String city;
+    private String state;
+    private String country;
+    private String postalCode;
 }

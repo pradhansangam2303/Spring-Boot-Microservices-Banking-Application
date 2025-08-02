@@ -1,20 +1,24 @@
-<h1 align="center">🌟 Spring-Boot-Microservices-Banking-Application 🌟</h1>
-<h2>📋 Table of Contents</h2>
+# 🌟 Spring Boot Microservices Banking Application 🌟
+
+## 📋 Table of Contents
 
 - [🔍 About](#-about)
 - [🏛️ Architecture](#-architecture)
 - [🚀 Microservices](#-microservices)
+- [🛠️ Technology Stack](#-technology-stack)
 - [🚀 Getting Started](#-getting-started)
-- [📖 Documentation](#-documentation)
+- [🐳 Docker Setup](#-docker-setup)
+- [📖 API Documentation](#-api-documentation)
+- [🔒 Security](#-security)
 - [⌚ Future Enhancement](#-future-enhancement)
 - [🤝 Contribution](#-contribution)
 - [📞 Contact Information](#-contact-information)
 
 ## 🔍 About
-<p>
-    The Banking Application is built using a microservices architecture, incorporating the Spring Boot framework along with other Spring technologies such as Spring Data JPA, Spring Cloud, and Spring Security, alongside tools like Maven for dependency management. These technologies play a crucial role in establishing essential components like Service Registry, API Gateway, and more.<br><br>
-    Moreover, they enable us to develop independent microservices such as the user service for user management, the account service for account generation and other related functionalities, the fund transfer service for various transfer operations, and the transaction service for viewing transactions and facilitating withdrawals and deposits. These technologies not only streamline development but also enhance scalability and maintainability, ensuring a robust and efficient banking system.
-</p>
+
+The Banking Application is built using a microservices architecture, incorporating the Spring Boot framework along with other Spring technologies such as Spring Data JPA, Spring Cloud, and Spring Security, alongside tools like Maven for dependency management. These technologies play a crucial role in establishing essential components like Service Registry, API Gateway, and more.
+
+Moreover, they enable us to develop independent microservices such as the user service for user management, the account service for account generation and other related functionalities, the fund transfer service for various transfer operations, and the transaction service for viewing transactions and facilitating withdrawals and deposits. These technologies not only streamline development but also enhance scalability and maintainability, ensuring a robust and efficient banking system.
 
 ## 🏛️ Architecture
 
@@ -22,47 +26,170 @@
 
 - **API Gateway:** This microservices uses the API gateway to centralize the API endpoint, where all the endpoints have common entry point to all the endpoints. The API Gateway also facilitates the Security inclusion where the Authorization and Authentication for the Application.
 
-- **Database per Microservice:** Each of the microservice have there own dedicated database. Here for this application for all the microservices we are incorparating the MySQL database. This helps us to isolate each of the services from each other which facilitates each services to have their own data schemas and scale each of the database when required.
+- **Database per Microservice:** Each of the microservice have there own dedicated database. Here for this application for all the microservices we are incorporating the MySQL database. This helps us to isolate each of the services from each other which facilitates each services to have their own data schemas and scale each of the database when required.
 
+## 🚀 Microservices
 
-<h2>🚀 Microservices</h2>
+- **👤 User Service (Port: 8081):** The user microservice provides functionalities for user management. This includes user registration, updating user details, viewing user information, and accessing all accounts associated with the user. Additionally, this microservice handles user authentication and authorization processes with Keycloak integration.
 
-- **👤 User Service:** The user microservice provides functionalities for user management. This includes user registration, updating user details, viewing user information, and accessing all accounts associated with the user. Additionally, this microservice handles user authentication and authorization processes.
+- **💼 Account Service (Port: 8082):** The account microservice manages account-related APIs. It enables users to modify account details, view all accounts linked to the user profile, access transaction histories for each account, and supports the account closure process.
 
-- **💼 Account Service:** The account microservice manages account-related APIs. It enables users to modify account details, view all accounts linked to the user profile, access transaction histories for each account, and supports the account closure process.
+- **💸 Fund Transfer Service (Port: 8084):** The fund transfer microservice facilitates various fund transfer-related functionalities. Users can initiate fund transfers between different accounts, access detailed fund transfer records, and view specific details of any fund transfer transaction.
 
-- **💸 Fund Transfer Service:** The fund transfer microservice facilitates various fund transfer-related functionalities. Users can initiate fund transfers between different accounts, access detailed fund transfer records, and view specific details of any fund transfer transaction.
+- **💳 Transaction Service (Port: 8085):** The transaction service offers a range of transaction-related services. Users can view transactions based on specific accounts or transaction reference IDs, as well as make deposits or withdrawals from their accounts.
 
-- **💳 Transactions Service:** The transaction service offers a range of transaction-related services. Users can view transactions based on specific accounts or transaction reference IDs, as well as make deposits or withdrawals from their accounts.
+- **🔢 Sequence Generator (Port: 8083):** Generates unique account numbers and transaction reference IDs to ensure data integrity across the system.
 
-<h2>🚀 Getting Started</h2>
+- **🌐 API Gateway (Port: 8080):** Centralized entry point for all client requests with OAuth2 security integration.
 
-To get started, follow these steps to run the application on your local application:
+- **📋 Service Registry (Port: 8761):** Eureka server for service discovery and registration.
 
-- Make sure you have Java 17 installed on your system. You can download it from the official Oracle website.
-- Select an Integrated Development Environment (IDE) such as Eclipse, Spring Tool Suite, or IntelliJ IDEA. Configure the IDE according to your preferences.
-- Clone the repository containing the microservices onto your local system using Git. Navigate to the directory where you have cloned the repository.
-- Navigate to each microservice directory within the cloned repository and run the application. You can do this by using your IDE or running specific commands depending on the build tool used (e.g., Maven or Gradle).
-- Set up Keycloak for authentication and authorization. Refer to the detailed configuration guide provided [here](https://devscribbles.hashnode.dev/mastering-microservices-authentication-and-authorization-with-keycloak) for step-by-step instructions on configuring Keycloak for your microservices.
-- Some microservices and APIs may depend on others being up and running. Ensure that all necessary microservices and APIs are up and functioning correctly to avoid any issues in the application workflow.
+## 🛠️ Technology Stack
 
-<h2>📖 Documentation</h2>
-<h3>📂 Microservices Documentation</h3>
+- **Framework:** Spring Boot 2.7.14
+- **Cloud:** Spring Cloud 2021.0.8
+- **Security:** Spring Security + OAuth2 + Keycloak
+- **Database:** MySQL 8.0 (per service)
+- **Service Discovery:** Netflix Eureka
+- **API Gateway:** Spring Cloud Gateway
+- **Communication:** OpenFeign, REST APIs
+- **Build Tool:** Maven
+- **Java Version:** 17
+- **Containerization:** Docker & Docker Compose
+- **Object Mapping:** ModelMapper
+- **Validation:** Spring Boot Validation
 
-For detailed information about each microservice, refer to their respective README files:
+## 🚀 Getting Started
 
-- [👤 User Service](./User-Service/README.md)
-- [💼 Account Service](./Account-Service/README.md)
-- [💸 Fund Transfer Service](./Fund-Transfer/README.md)
-- [💳 Transactions Service](./Transaction-Service/README.md)
+### Prerequisites
 
-<h3>📖 API Documentation</h3>
+- Java 17 or higher
+- Maven 3.6+
+- Docker and Docker Compose
+- MySQL 8.0 (if running locally)
 
-For a detailed guide on API endpoints and usage instructions, explore our comprehensive [API Documentation](https://app.theneo.io/student/spring-boot-microservices-banking-application). This centralized resource offers a holistic view of the entire banking application, making it easier to understand and interact with various services.
+### Local Development Setup
 
-<h3>📚 Java Documentation (JavaDocs)</h3>
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd Spring-Boot-Microservices-Banking-Application
+   ```
 
-Explore the linked [Java Documentation](https://kartik1502.github.io/Spring-Boot-Microservices-Banking-Application/) to delve into detailed information about classes, methods, and variables across all microservices. These resources are designed to empower developers by providing clear insights into the codebase and facilitating seamless development and maintenance tasks.
+2. **Start the databases:**
+   ```bash
+   # Start MySQL databases
+   docker-compose up -d user-service-db account-service-db transaction-service-db fund-transfer-service-db sequence-generator-db keycloak-db
+   ```
+
+3. **Start Keycloak:**
+   ```bash
+   docker-compose up -d keycloak
+   ```
+
+4. **Build all services:**
+   ```bash
+   # Build each service
+   cd Service-Registry && mvn clean package -DskipTests && cd ..
+   cd API-Gateway && mvn clean package -DskipTests && cd ..
+   cd User-Service && mvn clean package -DskipTests && cd ..
+   cd Sequence-Generator && mvn clean package -DskipTests && cd ..
+   ```
+
+5. **Run services in order:**
+   ```bash
+   # 1. Start Service Registry
+   cd Service-Registry && mvn spring-boot:run &
+   
+   # 2. Wait for Service Registry to start, then start other services
+   cd User-Service && mvn spring-boot:run &
+   cd Sequence-Generator && mvn spring-boot:run &
+   cd API-Gateway && mvn spring-boot:run &
+   ```
+
+## 🐳 Docker Setup
+
+### Using Docker Compose (Recommended)
+
+1. **Start all services:**
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **Check service status:**
+   ```bash
+   docker-compose ps
+   ```
+
+3. **View logs:**
+   ```bash
+   docker-compose logs -f [service-name]
+   ```
+
+4. **Stop all services:**
+   ```bash
+   docker-compose down
+   ```
+
+### Service URLs
+
+- **Service Registry:** http://localhost:8761
+- **API Gateway:** http://localhost:8080
+- **User Service:** http://localhost:8081
+- **Sequence Generator:** http://localhost:8083
+- **Keycloak:** http://localhost:8571
+
+## 📖 API Documentation
+
+### User Service APIs
+
+- `POST /api/users/register` - Register new user
+- `GET /api/users` - Get all users
+- `GET /api/users/{userId}` - Get user by ID
+- `GET /api/users/auth/{authId}` - Get user by auth ID
+- `PUT /api/users/{id}` - Update user
+- `PATCH /api/users/{id}` - Update user status
+
+### Sequence Generator APIs
+
+- `POST /sequence` - Generate new account number
+
+### API Gateway Routes
+
+All requests should go through the API Gateway at `http://localhost:8080`:
+
+- User Service: `/api/users/**`
+- Account Service: `/accounts/**`
+- Transaction Service: `/transactions/**`
+- Fund Transfer Service: `/fund-transfers/**`
+- Sequence Generator: `/sequence/**`
+
+## 🔒 Security
+
+### Keycloak Configuration
+
+1. **Access Keycloak Admin Console:**
+   - URL: http://localhost:8571
+   - Username: admin
+   - Password: admin
+
+2. **Create Realm:**
+   - Create a new realm named `banking-service`
+
+3. **Create Client:**
+   - Client ID: `banking-app`
+   - Configure redirect URIs and client settings
+
+4. **User Management:**
+   - Users are automatically created in Keycloak during registration
+   - JWT tokens are used for authentication
+
+### Security Features
+
+- OAuth2/JWT authentication
+- Public access to user registration
+- Protected endpoints for all other operations
+- CORS configuration for web clients
 
 ## ⌚ Future Enhancement
 
@@ -70,17 +197,29 @@ As part of our ongoing commitment to improving the banking application, we are p
 
 - Implementing a robust notification system will keep users informed about important account activities, such as transaction updates, account statements, and security alerts. Integration with email and SMS will ensure timely and relevant communication.
 - Adding deposit and investment functionalities will enable users to manage their savings and investments directly through the banking application. Features such as fixed deposits, recurring deposits, and investment portfolio tracking will empower users to make informed financial decisions.
-- and more....
+- Complete implementation of Account Service, Transaction Service, and Fund Transfer Service
+- API rate limiting and throttling
+- Comprehensive monitoring and logging with ELK stack
+- Unit and integration tests
+- CI/CD pipeline setup
 
-<h2>🤝 Contribution</h2>
+## 🤝 Contribution
 
 Contributions to this project are welcome! Feel free to open issues, submit pull requests, or provide feedback to enhance the functionality and usability of this banking application. Follow the basic PR specification while creating a PR.
+
+### Development Guidelines
+
+1. Follow Spring Boot best practices
+2. Write comprehensive tests
+3. Update documentation for new features
+4. Use conventional commit messages
+5. Ensure code quality with SonarQube
 
 Let's build a robust and efficient banking system together using Spring Boot microservices!
 
 Happy Banking! 🏦💰
 
-<h2>📞 Contact Information</h2>
+## 📞 Contact Information
 
 If you have any questions, feedback, or need assistance with this project, please feel free to reach out to me:
 

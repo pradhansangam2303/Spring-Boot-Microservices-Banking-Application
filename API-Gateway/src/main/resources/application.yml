@@ -49,21 +49,21 @@ spring:
       client:
         provider:
           keycloak:
-            token-uri: ${app.config.keycloak.url}/realms/${app.config.keycloak.realm}/protocol/openid-connect/token
-            authorization-uri: ${app.config.keycloak.url}/realms/${app.config.keycloak.realm}/protocol/openid-connect/auth
-            user-name-attribute: preferred_username
-            user-info-uri: ${app.config.keycloak.url}/realms/${app.config.keycloak.realm}/protocol/openid-connect/userinfo
-            jwk-set-uri: ${app.config.keycloak.url}/realms/${app.config.keycloak.realm}/protocol/openid-connect/certs
-            user-info-authentication-method: header
+            issuer-uri: ${app.config.keycloak.url}realms/${app.config.keycloak.realm}
         registration:
-          banking-service-client:
+          keycloak:
             provider: keycloak
-            client-id: banking-service-client
-            client-secret: Au6eAD2JgB5MH0G2tNrPLfKqObswfSPb
+            client-id: banking-app
+            client-secret: your-client-secret
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8571/login/oauth2/code/keycloak
-            scope: openid
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
       resourceserver:
         jwt:
-          jwk-set-uri: ${app.config.keycloak.url}/realms/${app.config.keycloak.realm}/protocol/openid-connect/certs
+          issuer-uri: ${app.config.keycloak.url}realms/${app.config.keycloak.realm}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
 
